@@ -2,17 +2,30 @@ package main
 
 import (
 	"flag"
-	"log"
+	"github.com/liudng/godump"
 )
 
+var name string
+
 func main() {
-	var name string
-
-	flag.StringVar(&name, "name", "QY", "名称")
-
-	flag.StringVar(&name, "n", "QY", "名称")
-
 	flag.Parse()
 
-	log.Printf("name: %s", name)
+	args := flag.Args()
+
+	if len(args) <= 0 {
+		return
+	}
+
+	switch args[0] {
+	case "go":
+		goCmd := flag.NewFlagSet("go", flag.ExitOnError)
+		goCmd.StringVar(&name, "name", "go", "set your name")
+		_ = goCmd.Parse(args[1:])
+	case "php":
+		goCmd := flag.NewFlagSet("php", flag.ExitOnError)
+		goCmd.StringVar(&name, "n", "php", "set your name")
+		_ = goCmd.Parse(args[1:])
+	}
+
+	godump.Dump(name)
 }
